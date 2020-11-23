@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Xiaoyao Yin" />
+
+<meta name="date" content="2020-11-20" />
+
+<title>An Introduction to the package M2SMJF</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">An Introduction to the package M2SMJF</h1>
+<h4 class="author">Xiaoyao Yin</h4>
+<h4 class="date">2020-11-20</h4>
+
+
+
+<p>This vignette presents the <strong>M2SMJF</strong>,which implements a framework named multi-modality similarity matrix joint factorization (M2SMJF) to conduct integrative analysis of multiple modality data in <strong>R</strong>. The objective is to provide an implementation of the proposed method, which is designed to solve the high dimensionality multiple modality data in bioinformatics. It was achived by first constructing similarity matrices for each modality to reduce the dimension, and then jointly factorizing them into a shared sub-matrix with group sparsity constraint and several modality private sub-matrices. The introduction of group sparsity on the shared coefficient sub-matrix forces the samples in the same group to allow each modality exploiting only a subset of the dimensions of the global latent space, since the latent dimensions are shared across any subset of the views rather than across all views only.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>The latest stable version of the package can be installed from any CRAN repository mirror:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#Install</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">'M2SMJF'</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#Load</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(M2SMJF)</a></code></pre></div>
+<p>The latest development version is available from <a href="https://cran.r-project.org/package=M2SMJF" class="uri">https://cran.r-project.org/package=M2SMJF</a> and may be downloaded from there and installed manully:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">'/path/to/file/M2SMJF.tar.gz'</span>,<span class="dt">repos=</span><span class="ot">NULL</span>,<span class="dt">type=</span><span class="st">&quot;source&quot;</span>)</a></code></pre></div>
+<p><strong>Support</strong>: Users interested in this package are encouraged to email to Xiaoyao Yin (<a href="mailto:yinxy1992@sina.com">yinxy1992@sina.com</a>) for enquiries, bug reports, feature requests, suggestions or M2SMJF-related discussions.</p>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p>We will give an example of how to use this packge hereafter.</p>
+<div id="simulation-data-generation" class="section level3">
+<h3>Simulation data generation</h3>
+<p>We generate simulated data with two modularities and five clusters with the function <em>simu_data_gen</em>. Each data modality consists of 100 samples, the first modality data is composed of 100 features for each sample while the second modality comprising 50 features. Samples are assigned to 5 groups equally, i.e. 20 samples in each group. The data are generated with the rnorm function in R with mean varying from 10 to 50 and variance 1 for the first modality while the second modality with mean varying from 5 to 30 and variance 1. The data can be generated by running:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">data_list =<span class="st"> </span><span class="kw">simu_data_gen</span>()</a></code></pre></div>
+</div>
+<div id="simulation-data-groundtruth-assignment-and-permutation" class="section level3">
+<h3>Simulation data groundtruth assignment and permutation</h3>
+<p><strong>Label assignment</strong>: According to the data generation process, we assign the groundtruth label to the data we have generated as:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">truelabel =<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>),<span class="dt">each=</span><span class="dv">20</span>)</a></code></pre></div>
+<p>this label will be used to test the clustering ability afterwards.</p>
+<p><strong>Data permutation</strong>: Since the data structure is much too easy for the classification task, we will permute same of the data in one modality to test the classification ability of the proposed method.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#Assign the number of samples to permute</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">pert_num =<span class="st"> </span><span class="dv">10</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#Radomly sample *pert_num* samples from all the samples</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">index1  =<span class="st">  </span><span class="kw">sample</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>),<span class="dt">n=</span>pert_num)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#Permute the samples by index</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">index2  =<span class="st">  </span>gtools<span class="op">::</span><span class="kw">permute</span>(index1)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#Reassign them to the first modality data</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">temp_data =<span class="st"> </span>data_list[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">sub_data  =<span class="st">  </span>temp_data[index1,]</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">temp_data[index2,]  =<span class="st">  </span>sub_data</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">data_list[[<span class="dv">1</span>]] =<span class="st"> </span>temp_data</a></code></pre></div>
+<p>Now we can cluster the samples with the proposed method and compare its performance by calculating the normalized mutual information with the function <em>cal_NMI</em> by inputting the truelabel and the predicted label.</p>
+<hr />
+</div>
+</div>
+<div id="you-should-start-from-here-if-you-are-using-your-own-data." class="section level2">
+<h2>You should start from here if you are using your own data.</h2>
+<hr />
+<p><strong>Data normalization</strong>: We conduct this process because the dimensionalities come from different metrics and have different scales, and further this easily induces the bias of the built similarity matrix to large features. To remove this negative effect, we normalize the original data matrix of each modality by column, such that each feature has mean 0 and variance 1. <em>This is required only for continous data, integer values and binary values do not need the normalization process.</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(data_list))</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    data_list[[i]] =<span class="st"> </span><span class="kw">Standard_Normalization</span>(data_list[[i]])</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">}</a></code></pre></div>
+<p><strong>Distance calculation</strong>: We denote ρ(x_i,x_j) as the Euclidean distance of two any pair-wise samples x_i and x_j for real values with function <em>dist2eu</em>, chi-squared distance for integer values with function <em>dist2chi</em> and agreement based measure for binary values with function <em>dist2bin</em>, respectively.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(data_list))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    data_list[[i]] =<span class="st"> </span><span class="kw">dist2eu</span>(data_list[[i]],data_list[[i]])</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">}</a></code></pre></div>
+<p><strong>Similarity matrix construction</strong>: We use the scaled exponential similarity kernel to determine the weight of x_i and x_j, and then normalize the tough similarity matrix to a relatively tight interval with Laplacian normalization to avoid negative effect of some modalities data, which might lead to divergence. All above are implemented in the function <em>affinityMatrix</em>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(data_list))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">{</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    data_list[[i]] =<span class="st"> </span><span class="kw">affinityMatrix</span>(data_list[[i]])</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">}</a></code></pre></div>
+<p><strong>M2SMJF</strong>: Jointly factorize the matrices into a shared embedding matrix and several modality private basis matrices.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">#Assign the parameters</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">lambda =<span class="st"> </span><span class="fl">0.25</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">theta =<span class="st"> </span><span class="dv">10</span><span class="op">^-</span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">k =<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">res =<span class="st"> </span><span class="kw">M2SMJF</span>(data_list,lambda,theta,k)</a></code></pre></div>
+<p>Now you have got the classification result you want.</p>
+<p><strong>Evaluating k</strong>: Evaluate the most proper cluster number k by normalized average modulairty with the function <em>new_modularity</em>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">#Assign the interval of k according to your data</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">k_min =<span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">k_max =<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#Initialize the varible</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">modularity_data =<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>,(k_max<span class="op">-</span>k_min<span class="op">+</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#Test all the k</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="cf">for</span> (i <span class="cf">in</span> k_min<span class="op">:</span>k_max)</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">{</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">    res =<span class="st"> </span><span class="kw">M2SMJF</span>(data_list,lambda,theta,i)</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    modularity_data[i<span class="op">-</span>k_min<span class="op">+</span><span class="dv">1</span>] =<span class="st"> </span><span class="kw">new_modularity</span>(res,data_list)</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#The most proper is the one with maximum modularity</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">best_k =<span class="st"> </span><span class="kw">which</span>(modularity_data<span class="op">==</span><span class="kw">max</span>(modularity_data),T)<span class="op">+</span>k_min<span class="dv">-1</span></a></code></pre></div>
+<hr />
+</div>
+<div id="you-can-ommit-the-following-if-you-do-not-have-any-true-label-as-the-groudtruth-we-do-the-next-to-evaluate-our-method." class="section level2">
+<h2>You can ommit the following if you do not have any true label as the groudtruth, we do the next to evaluate our method.</h2>
+<hr />
+<p><strong>Robustness test</strong>: We test the robustness of our method by calculating the normalized mutual information of the true label and our predicted label. We can compare the performance of our method with others by this score, which is in the interval [0,1]. The larger the score, the more robust the method. We show the comparison of our method with <em>SNF</em> as an example.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#Calculate the NMI of our method *M2SMJF*</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">M2SMJF_res =<span class="st"> </span><span class="kw">M2SMJF</span>(data_list,lambda,theta,i)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">M2SMJF_cluster =<span class="st"> </span>M2SMJF_res<span class="op">$</span>clusters</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">M2SMJF_NMI =<span class="st"> </span><span class="kw">cal_NMI</span>(true_label,M2SMJF_cluster)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#Calculate the NMI of *SNF*</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">SNF_res =<span class="st"> </span><span class="kw">SNF</span>(data_list,<span class="dv">20</span>,<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">SNF_cluster =<span class="st"> </span>SNF_res<span class="op">$</span>clusters</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">SNF_NMI =<span class="st"> </span><span class="kw">cal_NMI</span>(true_label,SNF_cluster)</a></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
